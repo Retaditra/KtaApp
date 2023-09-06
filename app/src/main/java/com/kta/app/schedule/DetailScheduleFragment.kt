@@ -1,27 +1,27 @@
-package com.kta.app.fitur
+package com.kta.app.schedule
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.kta.app.databinding.FragmentDetailBinding
+import com.kta.app.databinding.FragmentDetailScheduleBinding
 
-class DetailFragment : BottomSheetDialogFragment() {
+class DetailScheduleFragment : BottomSheetDialogFragment() {
 
-    private lateinit var binding: FragmentDetailBinding
+    private lateinit var binding: FragmentDetailScheduleBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentDetailBinding.inflate(inflater, container, false)
+        binding = FragmentDetailScheduleBinding.inflate(inflater, container, false)
 
-        binding.closeButton.setOnClickListener {
+        binding.background.setOnClickListener {
             dismiss()
         }
 
-        binding.background.setOnClickListener {
+        binding.closeButton.setOnClickListener {
             dismiss()
         }
 

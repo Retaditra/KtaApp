@@ -4,22 +4,23 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.kta.app.databinding.ActivityMainBinding
-import com.kta.app.fitur.DetailFragment
-import com.kta.app.fitur.KtaActivity
-import com.kta.app.fitur.ScheduleActivity
-import com.kta.app.utils.EncryptedSharedPreferencesHelper
+import com.kta.app.schedule.DetailScheduleFragment
+import com.kta.app.kta.KtaActivity
+import com.kta.app.login.LoginActivity
+import com.kta.app.schedule.ScheduleActivity
+import com.kta.app.utils.EncryptedSharedPreferences
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var sharedPreferencesHelper: EncryptedSharedPreferencesHelper
+    private lateinit var sharedPreferencesHelper: EncryptedSharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        sharedPreferencesHelper = EncryptedSharedPreferencesHelper(applicationContext)
+        sharedPreferencesHelper = EncryptedSharedPreferences(applicationContext)
         checkTokenAndNavigate()
 
         binding.ktaDigital.setOnClickListener {
@@ -39,9 +40,9 @@ class MainActivity : AppCompatActivity() {
         }
          */
         binding.absent.setOnClickListener {
-            val detailFragment = DetailFragment()
+            val detailScheduleFragment = DetailScheduleFragment()
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, detailFragment)
+                .replace(R.id.fragment_container, detailScheduleFragment)
                 .addToBackStack(null)
                 .commit()
         }

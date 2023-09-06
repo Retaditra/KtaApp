@@ -7,7 +7,7 @@ import android.security.keystore.KeyProperties
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 
-class EncryptedSharedPreferencesHelper(context: Context) {
+class EncryptedSharedPreferences(context: Context) {
 
     private val sharedPreferences = createEncryptedSharedPreferences(context)
 

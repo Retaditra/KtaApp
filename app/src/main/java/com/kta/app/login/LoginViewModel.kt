@@ -1,14 +1,14 @@
-package com.kta.app
+package com.kta.app.login
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import com.kta.app.utils.EncryptedSharedPreferencesHelper
+import com.kta.app.utils.EncryptedSharedPreferences
 
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
-    private val sharedPreferencesHelper: EncryptedSharedPreferencesHelper
+    private val sharedPreferencesHelper: EncryptedSharedPreferences
 
     init {
-        sharedPreferencesHelper = EncryptedSharedPreferencesHelper(application)
+        sharedPreferencesHelper = EncryptedSharedPreferences(application)
     }
 
     fun login(
@@ -50,9 +50,11 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
          */
     }
 
-    fun saveUserCredentials(token: String) {
+    fun saveUserCredentials(token: String, id: String, name: String) {
         with(sharedPreferencesHelper.getSharedPreferences().edit()) {
             putString("token", token)
+            putString("id", id)
+            putString("name", name)
             apply()
         }
     }

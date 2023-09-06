@@ -1,4 +1,4 @@
-package com.kta.app.fitur
+package com.kta.app.kta
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

@@ -1,4 +1,4 @@
-package com.kta.app
+package com.kta.app.login
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +8,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.kta.app.MainActivity
+import com.kta.app.R
 import com.kta.app.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
@@ -24,7 +26,7 @@ class LoginActivity : AppCompatActivity() {
         setupPasswordValidation()
 
         binding.loginButton.setOnClickListener {
-            viewModel.saveUserCredentials("12345")
+            viewModel.saveUserCredentials("12345", "12", "Saya")
             val intent = Intent(this@LoginActivity, MainActivity::class.java)
             startActivity(intent)
             finish()
