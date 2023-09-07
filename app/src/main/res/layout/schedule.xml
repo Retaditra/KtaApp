@@ -29,12 +29,12 @@
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
             card_view:layout_constraintBottom_toBottomOf="parent"
-            card_view:layout_constraintEnd_toStartOf="@+id/btnAksi"
+            card_view:layout_constraintEnd_toStartOf="@+id/btnAbsent"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/nama_kegiatan"
+                android:id="@+id/namaKegiatan"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_marginBottom="15dp"
@@ -46,7 +46,7 @@
                 android:textStyle="bold" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:orientation="horizontal">
@@ -69,7 +69,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
@@ -104,16 +104,15 @@
 
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnAksi"
+            android:id="@+id/btnAbsent"
             style="@style/MaterialButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginBottom="3dp"
+            android:layout_marginTop="1dp"
             android:backgroundTint="@color/teal_700"
             android:text="@string/absent"
-            android:textSize="15sp"
+            android:textSize="12sp"
             app:layout_constraintBottom_toTopOf="@+id/status"
-            app:layout_constraintVertical_bias="0.0"
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintTop_toBottomOf="@+id/jam" />
 
@@ -125,7 +124,7 @@
             android:textSize="12sp"
             card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintEnd_toEndOf="parent"
-            card_view:layout_constraintStart_toStartOf="@+id/btnAksi" />
+            card_view:layout_constraintStart_toStartOf="@+id/btnAbsent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>
