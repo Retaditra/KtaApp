@@ -2,6 +2,7 @@ package com.kta.app
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.kta.app.databinding.ActivityMainBinding
 import com.kta.app.schedule.DetailScheduleFragment
@@ -33,18 +34,8 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        /*
         binding.absent.setOnClickListener {
-            val intent = Intent(this, AbsentActivity::class.java)
-            startActivity(intent)
-        }
-         */
-        binding.absent.setOnClickListener {
-            val detailScheduleFragment = DetailScheduleFragment()
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, detailScheduleFragment)
-                .addToBackStack(null)
-                .commit()
+            Toast.makeText(this, getString(R.string.fiturAbsent), Toast.LENGTH_SHORT).show()
         }
 
         binding.logout.setOnClickListener {
