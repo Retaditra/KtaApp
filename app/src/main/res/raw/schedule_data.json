@@ -1,0 +1,222 @@
+[
+  {
+    "id": 1,
+    "nama_kegiatan": "Meeting Proyek A",
+    "waktu": "12.00 WIB",
+    "tanggal": "Senin, 4 September 2023",
+    "lokasi": "Ruang Rapat 1",
+    "status": "selesai",
+    "PIC": "John Doe",
+    "aksi": "hadir",
+    "notulensi": "Kegiatan berlangsung lancar."
+  },
+  {
+    "id": 2,
+    "nama_kegiatan": "Pelatihan Pemasaran",
+    "waktu": "09.30 WIB",
+    "tanggal": "Selasa, 5 September 2023",
+    "lokasi": "Aula Utama",
+    "status": "akan datang",
+    "PIC": "Jane Smith",
+    "aksi": "belum hadir",
+    "notulensi": "Peserta harus membawa laptop."
+  },
+  {
+    "id": 3,
+    "nama_kegiatan": "Rapat Tim HR",
+    "waktu": "14.00 WIB",
+    "tanggal": "Rabu, 6 September 2023",
+    "lokasi": "Ruang Rapat 2",
+    "status": "berlangsung",
+    "PIC": "Alice Johnson",
+    "aksi": "hadir",
+    "notulensi": "Penting untuk membahas rekrutmen baru."
+  },
+  {
+    "id": 4,
+    "nama_kegiatan": "Konsultasi Dokter",
+    "waktu": "10.30 WIB",
+    "tanggal": "Kamis, 7 September 2023",
+    "lokasi": "Klinik Sehat Sentosa",
+    "status": "selesai",
+    "PIC": "Dr. Robert Brown",
+    "aksi": "hadir",
+    "notulensi": "Hasil pemeriksaan baik."
+  },
+  {
+    "id": 5,
+    "nama_kegiatan": "Peluncuran Produk Baru",
+    "waktu": "18.00 WIB",
+    "tanggal": "Jumat, 8 September 2023",
+    "lokasi": "Hotel Grand",
+    "status": "akan datang",
+    "PIC": "Mark Anderson",
+    "aksi": "belum hadir",
+    "notulensi": "Pastikan materi presentasi siap."
+  },
+  {
+    "id": 6,
+    "nama_kegiatan": "Rapat Persiapan Konferensi",
+    "waktu": "15.30 WIB",
+    "tanggal": "Senin, 11 September 2023",
+    "lokasi": "Ruang Rapat 3",
+    "status": "berlangsung",
+    "PIC": "Emily White",
+    "aksi": "hadir",
+    "notulensi": "Segera selesaikan rancangan agenda."
+  },
+  {
+    "id": 7,
+    "nama_kegiatan": "Training Sistem Keamanan",
+    "waktu": "13.45 WIB",
+    "tanggal": "Selasa, 12 September 2023",
+    "lokasi": "Kantor Pusat",
+    "status": "akan datang",
+    "PIC": "David Lee",
+    "aksi": "belum hadir",
+    "notulensi": "Persiapkan materi pelatihan."
+  },
+  {
+    "id": 8,
+    "nama_kegiatan": "Rapat Pengembangan Produk",
+    "waktu": "11.15 WIB",
+    "tanggal": "Rabu, 13 September 2023",
+    "lokasi": "Ruang Rapat 4",
+    "status": "berlangsung",
+    "PIC": "Sarah Green",
+    "aksi": "hadir",
+    "notulensi": "Diskusikan perbaikan fitur utama."
+  },
+  {
+    "id": 9,
+    "nama_kegiatan": "Pertemuan Tim Teknis",
+    "waktu": "09.00 WIB",
+    "tanggal": "Kamis, 14 September 2023",
+    "lokasi": "Lab Teknik",
+    "status": "selesai",
+    "PIC": "Michael Clark",
+    "aksi": "hadir",
+    "notulensi": "Pembahasan tentang pemeliharaan sistem."
+  },
+  {
+    "id": 10,
+    "nama_kegiatan": "Diskusi Marketing Campaign",
+    "waktu": "16.30 WIB",
+    "tanggal": "Jumat, 15 September 2023",
+    "lokasi": "Ruang Kreatif",
+    "status": "akan datang",
+    "PIC": "Laura Taylor",
+    "aksi": "belum hadir",
+    "notulensi": "Bawa proposal kampanye."
+  },
+  {
+    "id": 11,
+    "nama_kegiatan": "Rapat Evaluasi Proyek",
+    "waktu": "14.00 WIB",
+    "tanggal": "Senin, 18 September 2023",
+    "lokasi": "Ruang Rapat 2",
+    "status": "berlangsung",
+    "PIC": "Robert Johnson",
+    "aksi": "hadir",
+    "notulensi": "Periksa perkembangan proyek."
+  },
+  {
+    "id": 12,
+    "nama_kegiatan": "Pelatihan Keamanan Data",
+    "waktu": "10.45 WIB",
+    "tanggal": "Selasa, 19 September 2023",
+    "lokasi": "Ruang Training",
+    "status": "akan datang",
+    "PIC": "Jennifer Adams",
+    "aksi": "belum hadir",
+    "notulensi": "Periksa perangkat pelatihan."
+  },
+  {
+    "id": 13,
+    "nama_kegiatan": "Rapat Tim Produksi",
+    "waktu": "15.15 WIB",
+    "tanggal": "Rabu, 20 September 2023",
+    "lokasi": "Studio Produksi",
+    "status": "selesai",
+    "PIC": "Daniel Miller",
+    "aksi": "hadir",
+    "notulensi": "Pembahasan jadwal produksi."
+  },
+  {
+    "id": 14,
+    "nama_kegiatan": "Presentasi Keuangan Tahunan",
+    "waktu": "09.30 WIB",
+    "tanggal": "Kamis, 21 September 2023",
+    "lokasi": "Ruang Konferensi",
+    "status": "akan datang",
+    "PIC": "Karen Wilson",
+    "aksi": "belum hadir",
+    "notulensi": "Siapkan laporan keuangan."
+  },
+  {
+    "id": 15,
+    "nama_kegiatan": "Rapat Koordinasi Vendor",
+    "waktu": "11.00 WIB",
+    "tanggal": "Jumat, 22 September 2023",
+    "lokasi": "Kantor Pusat",
+    "status": "berlangsung",
+    "PIC": "Steven Brown",
+    "aksi": "hadir",
+    "notulensi": "Pemesanan bahan baku."
+  },
+  {
+    "id": 16,
+    "nama_kegiatan": "Peluncuran Aplikasi Mobile",
+    "waktu": "17.30 WIB",
+    "tanggal": "Senin, 25 September 2023",
+    "lokasi": "Hotel Grand",
+    "status": "akan datang",
+    "PIC": "Jessica Smith",
+    "aksi": "belum hadir",
+    "notulensi": "Pastikan tim teknis siap."
+  },
+  {
+    "id": 17,
+    "nama_kegiatan": "Rapat Strategi Pemasaran",
+    "waktu": "13.15 WIB",
+    "tanggal": "Selasa, 26 September 2023",
+    "lokasi": "Ruang Rapat 1",
+    "status": "berlangsung",
+    "PIC": "David Adams",
+    "aksi": "hadir",
+    "notulensi": "Rencanakan kampanye iklan."
+  },
+  {
+    "id": 18,
+    "nama_kegiatan": "Sesi Pelatihan Customer Service",
+    "waktu": "09.45 WIB",
+    "tanggal": "Rabu, 27 September 2023",
+    "lokasi": "Ruang Pelatihan",
+    "status": "selesai",
+    "PIC": "Laura Wilson",
+    "aksi": "hadir",
+    "notulensi": "Diskusi tentang pelayanan pelanggan."
+  },
+  {
+    "id": 19,
+    "nama_kegiatan": "Rapat Tim Penelitian",
+    "waktu": "14.30 WIB",
+    "tanggal": "Kamis, 28 September 2023",
+    "lokasi": "Ruang Rapat 3",
+    "status": "akan datang",
+    "PIC": "Michael Smith",
+    "aksi": "belum hadir",
+    "notulensi": "Bawa laporan penelitian terbaru."
+  },
+  {
+    "id": 20,
+    "nama_kegiatan": "Pertemuan Klien",
+    "waktu": "16.00 WIB",
+    "tanggal": "Jumat, 29 September 2023",
+    "lokasi": "Kantor Klien",
+    "status": "berlangsung",
+    "PIC": "Emma White",
+    "aksi": "hadir",
+    "notulensi": "Diskusikan permintaan klien."
+  }
+]
