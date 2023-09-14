@@ -50,11 +50,12 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
          */
     }
 
-    fun saveUserCredentials(token: String, id: String, name: String) {
+    fun saveUserCredentials(token: String, id: String, name: String, email: String) {
         with(sharedPreferencesHelper.getSharedPreferences().edit()) {
             putString("token", token)
             putString("id", id)
             putString("name", name)
+            putString("email", email)
             apply()
         }
     }

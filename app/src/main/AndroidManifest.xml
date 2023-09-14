@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,14 +16,6 @@
         android:theme="@style/Theme.KtaApp"
         tools:targetApi="33">
 
-        <activity
-            android:name="com.kta.app.schedule.ScheduleActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.kta.app.kta.KtaActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
         <activity
             android:name="com.kta.app.login.LoginActivity"
             android:exported="true"
@@ -34,6 +30,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
 
+        <receiver android:name=".NotificationReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="ACTION_NOTIFICATION" />
+            </intent-filter>
+        </receiver>
+
+    </application>
 </manifest>

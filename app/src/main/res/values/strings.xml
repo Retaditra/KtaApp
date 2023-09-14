@@ -15,5 +15,12 @@
     <string name="absent">Absen</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="fiturAbsent">Fitur absen dengan QR code akan segera tersedia.</string>
+    <string name="fiturAbsent">Fitur absen dengan QR code akan segera hadir</string>
+
+    <string name="pref_key_notify">key_notification</string>
+    <string name="name">Nama</string>
+    <string name="id">ID</string>
+    <string name="kta">KTA</string>
+    <string name="schedule">Kegiatan</string>
+    <string name="profile">Profile</string>
 </resources>

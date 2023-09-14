@@ -1,56 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.kta.app.MainActivity">
+    android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/ktaDigital"
-            style="@style/MaterialButtonStyle"
-            android:layout_marginBottom="15dp"
-            android:backgroundTint="@color/teal_700"
-            android:text="@string/kta_digital" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/schedule"
-            style="@style/MaterialButtonStyle"
-            android:layout_marginBottom="15dp"
-            android:backgroundTint="@color/teal_700"
-            android:text="@string/kegiatan" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/absent"
-            style="@style/MaterialButtonStyle"
-            android:layout_marginBottom="15dp"
-            android:backgroundTint="@color/teal_700"
-            android:text="@string/absensi" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/logout"
-            style="@style/MaterialButtonStyle"
-            android:backgroundTint="@color/teal_700"
-            android:text="@string/logout" />
-    </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/fragment_container"
+    <fragment
+        android:id="@+id/fragmentContainer"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:background="@color/red_brick"
+        app:itemIconSize="30dp"
+        app:itemIconTint="@drawable/item_selector"
+        app:itemTextColor="@drawable/item_selector"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="parent" />
+        app:menu="@menu/bottom_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

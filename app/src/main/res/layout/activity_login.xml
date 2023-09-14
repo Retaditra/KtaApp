@@ -81,6 +81,7 @@
                 android:id="@+id/loginButton"
                 style="@style/MaterialButtonStyle"
                 android:layout_marginTop="32dp"
+                android:backgroundTint="@color/red_brick"
                 android:text="@string/login"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

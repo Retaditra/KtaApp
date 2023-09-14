@@ -2,13 +2,14 @@ package com.kta.app
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.kta.app.databinding.ActivityMainBinding
-import com.kta.app.schedule.DetailScheduleFragment
-import com.kta.app.kta.KtaActivity
 import com.kta.app.login.LoginActivity
-import com.kta.app.schedule.ScheduleActivity
 import com.kta.app.utils.EncryptedSharedPreferences
 
 class MainActivity : AppCompatActivity() {
@@ -24,26 +25,10 @@ class MainActivity : AppCompatActivity() {
         sharedPreferencesHelper = EncryptedSharedPreferences(applicationContext)
         checkTokenAndNavigate()
 
-        binding.ktaDigital.setOnClickListener {
-            val intent = Intent(this, KtaActivity::class.java)
-            startActivity(intent)
-        }
+        val navView: BottomNavigationView = binding.bottomNavigation
 
-        binding.schedule.setOnClickListener {
-            val intent = Intent(this, ScheduleActivity::class.java)
-            startActivity(intent)
-        }
-
-        binding.absent.setOnClickListener {
-            Toast.makeText(this, getString(R.string.fiturAbsent), Toast.LENGTH_SHORT).show()
-        }
-
-        binding.logout.setOnClickListener {
-            logout()
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
+        val navController = findNavController(R.id.fragmentContainer)
+        navView.setupWithNavController(navController)
     }
 
     private fun checkTokenAndNavigate() {
@@ -54,9 +39,5 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-    }
-
-    private fun logout() {
-        sharedPreferencesHelper.getSharedPreferences().edit().clear().apply()
     }
 }

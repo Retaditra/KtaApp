@@ -26,7 +26,7 @@ class LoginActivity : AppCompatActivity() {
         setupPasswordValidation()
 
         binding.loginButton.setOnClickListener {
-            viewModel.saveUserCredentials("12345", "12", "Saya")
+            viewModel.saveUserCredentials("12345", "12", "Saya", "saya@a.id")
             val intent = Intent(this@LoginActivity, MainActivity::class.java)
             startActivity(intent)
             finish()

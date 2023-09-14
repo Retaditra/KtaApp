@@ -6,7 +6,7 @@
 
     <FrameLayout
         android:id="@+id/background"
-        android:contentDescription="Close"
+        android:contentDescription="Close Detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -229,12 +229,12 @@
                 android:id="@+id/btnAbsent"
                 style="@style/MaterialButtonStyle"
                 android:layout_width="wrap_content"
-                android:backgroundTint="@color/teal_700"
-                android:text="@string/absent"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="20dp"
+                android:backgroundTint="@color/red_brick"
+                android:text="@string/absent"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

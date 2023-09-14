@@ -3,18 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/schedule"
+    style="?attr/materialCardViewElevatedStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_marginStart="8dp"
-    android:layout_marginTop="2dp"
-    android:layout_marginEnd="8dp"
-    android:layout_marginBottom="2dp"
+    android:layout_margin="7dp"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    card_view:cardCornerRadius="15dp"
-    card_view:cardElevation="8dp">
+    card_view:cardCornerRadius="15dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -42,7 +39,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="Nama Kegiatan"
-                android:textSize="18dp"
+                android:textSize="15dp"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -55,7 +52,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
-                    android:background="@drawable/date_range"/>
+                    android:background="@drawable/date_range" />
 
                 <TextView
                     android:id="@+id/tanggal"
@@ -77,7 +74,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
-                    android:background="@drawable/location_on"/>
+                    android:background="@drawable/location_on" />
 
                 <TextView
                     android:id="@+id/lokasi"
@@ -109,7 +106,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginTop="1dp"
-            android:backgroundTint="@color/teal_700"
+            android:backgroundTint="@color/red"
             android:text="@string/absent"
             android:textSize="12sp"
             app:layout_constraintBottom_toTopOf="@+id/status"
