@@ -1,33 +1,62 @@
 package com.kta.app.schedule
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.kta.app.R
-import com.kta.app.data.ScheduleList
+import com.kta.app.data.Schedule
 import com.kta.app.databinding.ScheduleBinding
 
 class ScheduleAdapter(
-    private val onClick: (ScheduleList) -> Unit
-) : PagingDataAdapter<ScheduleList, ScheduleAdapter.ViewHolder>(DIFF_CALLBACK) {
+    private val onClick: (Schedule) -> Unit,
+    private val absent: (Schedule) -> Unit,
+) : PagingDataAdapter<Schedule, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ScheduleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding)
+    private val typeItem = 0
+    private val typeFooter = 1
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            typeItem -> {
+                val binding = ScheduleBinding.inflate(
+                    LayoutInflater.from(parent.context), parent, false
+                )
+                ItemViewHolder(binding)
+            }
+            typeFooter -> {
+                val footerView = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.footer_layout, parent, false)
+                FooterViewHolder(footerView)
+            }
+            else -> throw IllegalArgumentException("Invalid view type")
+        }
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val habit = getItem(position)
-        habit?.let { holder.bind(it) }
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder is ItemViewHolder) {
+            val schedule = getItem(position)
+            schedule?.let { holder.bind(it) }
+        }
     }
 
-    inner class ViewHolder(private val binding: ScheduleBinding) :
+    override fun getItemViewType(position: Int): Int {
+        return if (position == itemCount - 1) {
+            typeFooter
+        } else {
+            typeItem
+        }
+    }
+
+    override fun getItemCount(): Int {
+        return super.getItemCount() + 1
+    }
+
+    inner class ItemViewHolder(private val binding: ScheduleBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(schedule: ScheduleList) {
+        fun bind(schedule: Schedule) {
             with(binding) {
                 namaKegiatan.text = schedule.namaKegiatan
                 tanggal.text = schedule.tanggal
@@ -36,29 +65,25 @@ class ScheduleAdapter(
                 status.text = schedule.status
 
                 btnAbsent.setOnClickListener {
-                    val name = schedule.namaKegiatan
-                    Toast.makeText(binding.root.context, name, Toast.LENGTH_SHORT).show()
+                    absent(schedule)
                 }
 
-                root.setOnClickListener {
-                    val fragment = DetailScheduleFragment.newInstance(schedule)
-                    val transaction = (binding.root.context as AppCompatActivity)
-                        .supportFragmentManager.beginTransaction()
-                    transaction.replace(R.id.fragment_container, fragment)
-                    transaction.addToBackStack(null)
-                    transaction.commit()
+                itemView.setOnClickListener {
+                    onClick(schedule)
                 }
             }
         }
     }
 
+    inner class FooterViewHolder(view: View) : RecyclerView.ViewHolder(view)
+
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ScheduleList>() {
-            override fun areItemsTheSame(oldItem: ScheduleList, newItem: ScheduleList): Boolean {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Schedule>() {
+            override fun areItemsTheSame(oldItem: Schedule, newItem: Schedule): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: ScheduleList, newItem: ScheduleList): Boolean {
+            override fun areContentsTheSame(oldItem: Schedule, newItem: Schedule): Boolean {
                 return oldItem == newItem
             }
         }

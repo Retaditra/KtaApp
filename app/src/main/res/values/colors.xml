@@ -11,5 +11,8 @@
     <color name="red">#FF0000</color>
     <color name="red_200">#ff9e81</color>
     <color name="red_brick">#b22222</color>
+    <color name="red_700">#2d1106</color>
+
+    <color name="grey">#2c2c2c</color>
 
 </resources>

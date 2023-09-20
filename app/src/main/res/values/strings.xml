@@ -1,12 +1,11 @@
 <resources>
     <string name="app_name">KtaApp</string>
 
-    <string name="login">Login</string>
+    <string name="login">Masuk</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
 
-    <string name="invalid_email">Invalid Email</string>
-    <string name="invalid_password">Password Minimal 6 Karakter</string>
+    <string name="invalid_password">Password Minimal 8 Karakter</string>
 
     <string name="kta_digital">KTA DIgital</string>
     <string name="kegiatan">Kegiatan</string>
@@ -23,4 +22,9 @@
     <string name="kta">KTA</string>
     <string name="schedule">Kegiatan</string>
     <string name="profile">Profile</string>
+    <string name="no_whatsapp">No. Whatsapp</string>
+    <string name="emptyPhone">Nomor tidak boleh kosong</string>
+
+    <string name="failure">Tidak terhubung dengan Server</string>
+    <string name="failedLogin">Pastikan Nomor dan Password sudah benar</string>
 </resources>

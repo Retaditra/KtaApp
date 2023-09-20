@@ -4,15 +4,15 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class ScheduleList(
+data class Schedule(
     val id: Int,
     val namaKegiatan: String,
+    val lokasi: String,
     val waktu: String,
     val tanggal: String,
-    val lokasi: String,
+    val aksi: String,
     val status: String,
     val pic: String,
-    val aksi: String,
     val notulensi: String
 ) : Parcelable
 

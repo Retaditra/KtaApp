@@ -6,44 +6,47 @@
 
     <FrameLayout
         android:id="@+id/background"
-        android:contentDescription="Close Detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:alpha="0.5"
         android:background="@color/black"
         android:clickable="true"
+        android:contentDescription="Close Detail"
         android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/guideline" />
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <FrameLayout
-        android:id="@+id/content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/loginFrame"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@drawable/curved_background"
+        android:backgroundTint="@color/white"
         android:clickable="true"
         android:focusable="true"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/guideline">
+        app:layout_constraintStart_toStartOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/frameLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/closeButton"
-                android:contentDescription="Close Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/selector_back_down_button"
+                android:contentDescription="Close Button"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -63,7 +66,7 @@
 
             <TableLayout
                 android:id="@+id/tableLayout"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:paddingStart="50dp"
                 android:paddingTop="20dp"
@@ -139,13 +142,20 @@
                         android:paddingStart="8dp"
                         android:text=":" />
 
-                    <TextView
-                        android:id="@+id/detailLokasi"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="start"
-                        android:paddingStart="8dp"
-                        android:text="-" />
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/detailLokasi"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="start"
+                            android:paddingStart="8dp"
+                            android:text="-" />
+                    </LinearLayout>
                 </TableRow>
 
                 <TableRow android:layout_marginBottom="5dp">
@@ -189,13 +199,20 @@
                         android:paddingStart="8dp"
                         android:text=":" />
 
-                    <TextView
-                        android:id="@+id/detailPIC"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="start"
-                        android:paddingStart="8dp"
-                        android:text="-" />
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/detailPIC"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="start"
+                            android:paddingStart="8dp"
+                            android:text="-" />
+                    </LinearLayout>
                 </TableRow>
 
                 <TableRow android:layout_marginBottom="5dp">
@@ -218,7 +235,11 @@
                         android:id="@+id/detailNotulensi"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:autoLink="web"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:gravity="start"
+                        android:maxLines="1"
                         android:paddingStart="8dp"
                         android:text="-" />
                 </TableRow>
@@ -238,13 +259,17 @@
                 app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </FrameLayout>
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5" />
+        <FrameLayout
+            android:id="@+id/frameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_gravity="bottom"
+            android:alpha="5"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

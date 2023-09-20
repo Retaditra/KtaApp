@@ -7,13 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.kta.app.data.ScheduleList
+import com.kta.app.data.Schedule
 import com.kta.app.databinding.FragmentDetailScheduleBinding
 
 class DetailScheduleFragment : BottomSheetDialogFragment() {
 
     private lateinit var binding: FragmentDetailScheduleBinding
-    private var scheduleData: ScheduleList? = null
+    private var scheduleData: Schedule? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -22,9 +22,8 @@ class DetailScheduleFragment : BottomSheetDialogFragment() {
         binding = FragmentDetailScheduleBinding.inflate(inflater, container, false)
 
         scheduleData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            requireArguments().getParcelable("scheduleData", ScheduleList::class.java)
+            requireArguments().getParcelable("scheduleData", Schedule::class.java)
         } else {
-            @Suppress("DEPRECATION")
             requireArguments().getParcelable("scheduleData")
         }
 
@@ -53,7 +52,7 @@ class DetailScheduleFragment : BottomSheetDialogFragment() {
     }
 
     companion object {
-        fun newInstance(scheduleData: ScheduleList): DetailScheduleFragment {
+        fun newInstance(scheduleData: Schedule): DetailScheduleFragment {
             val fragment = DetailScheduleFragment()
             val args = Bundle()
             args.putParcelable("scheduleData", scheduleData)
