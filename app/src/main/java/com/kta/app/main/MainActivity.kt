@@ -14,30 +14,32 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.kta.app.R
 import com.kta.app.databinding.ActivityMainBinding
 import com.kta.app.login.LoginActivity
-import com.kta.app.utils.EncryptedSharedPreferences
+import com.kta.app.utils.EncryptPreferences
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var sharedPreferencesHelper: EncryptedSharedPreferences
     private lateinit var viewPager: ViewPager2
     private lateinit var tabLayout: TabLayout
-    private var isBackPressedOnce = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        sharedPreferencesHelper = EncryptedSharedPreferences(applicationContext)
         checkTokenAndNavigate()
 
         viewPager = binding.viewPager
         tabLayout = binding.tabLayout
 
-        val viewPagerAdapter = ViewPagerAdapter(this)
-        viewPager.adapter = viewPagerAdapter
+        val adapter = ViewPagerAdapter(this)
+        viewPager.adapter = adapter
 
+        tabLayoutView()
+        backPressed()
+    }
+
+    private fun tabLayoutView() {
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             when (position) {
                 0 -> {
@@ -54,7 +56,10 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }.attach()
+    }
 
+    private fun backPressed() {
+        var isBackPressedOnce = false
         onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (isBackPressedOnce) {
@@ -62,7 +67,7 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     isBackPressedOnce = true
                     Toast.makeText(
-                        this@MainActivity, "Tekan lagi untuk keluar",
+                        this@MainActivity, getString(R.string.closeWarning),
                         Toast.LENGTH_SHORT
                     ).show()
                     Handler(Looper.getMainLooper()).postDelayed({
@@ -73,9 +78,9 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-
     private fun checkTokenAndNavigate() {
-        val token = sharedPreferencesHelper.getSharedPreferences().getString("token", null)
+        val preference = EncryptPreferences(applicationContext)
+        val token = preference.getPreferences().getString("token", null)
 
         if (token == null) {
             val intent = Intent(this, LoginActivity::class.java)

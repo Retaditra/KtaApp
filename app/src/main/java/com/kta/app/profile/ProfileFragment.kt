@@ -8,15 +8,18 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.kta.app.SessionExpiredDialog
+import androidx.lifecycle.lifecycleScope
+import com.kta.app.R
+import com.kta.app.data.database.DataRepository
 import com.kta.app.databinding.FragmentProfileBinding
 import com.kta.app.login.LoginActivity
-import com.kta.app.utils.EncryptedSharedPreferences
+import com.kta.app.utils.EncryptPreferences
+import kotlinx.coroutines.launch
 
 class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
-    private lateinit var sharedPreferencesHelper: EncryptedSharedPreferences
+    private lateinit var preference: EncryptPreferences
     private val viewModel: LogoutViewModel by viewModels()
 
     override fun onCreateView(
@@ -29,51 +32,59 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        preference = EncryptPreferences(requireContext())
 
-        sharedPreferencesHelper = EncryptedSharedPreferences(requireContext())
-
-        val sharedPref = sharedPreferencesHelper.getSharedPreferences()
-        val name = sharedPref.getString("name", null)
-        val phone = sharedPref.getString("phone", null)
-        val id = sharedPref.getString("id", null)
-
-        binding.userName.text = name
-        binding.userPhone.text = phone
-        binding.userID.text = id
-
+        getProfile()
         binding.logoutButton.setOnClickListener {
             logout()
         }
     }
 
+    private fun getProfile() {
+        val profile = preference.getPreferences()
+        val name = profile.getString("name", null)
+        val phone = profile.getString("phone", null)
+        val id = profile.getString("id", null)
+
+        binding.apply {
+            userName.text = name
+            userPhone.text = phone
+            userID.text = id
+        }
+    }
+
     private fun logout() {
-        val token = sharedPreferencesHelper.getSharedPreferences().getString("token", null)
+        val token = preference.getPreferences().getString("token", null)
+
         progressBar(true)
-
         viewModel.logout(token.toString(),
-            onSuccess = { success ->
-                Toast.makeText(requireContext(), success, Toast.LENGTH_SHORT).show()
+            onSuccess = {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                logoutProses()
                 progressBar(false)
-
-                with(sharedPreferencesHelper.getSharedPreferences().edit()) {
-                    remove("token")
-                    remove("name")
-                    remove("phone")
-                    remove("id")
-                    apply()
-                }
-
-                val intent = Intent(requireContext(), LoginActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(intent)
             },
-            onFailure = { errorMessage ->
-                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+            onFailure = {
+                logoutProses()
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.messageLogout),
+                    Toast.LENGTH_SHORT
+                ).show()
                 progressBar(false)
-                if (errorMessage == "unauthenticated") {
-                    SessionExpiredDialog.show(requireContext())
-                }
             })
+    }
+
+    private fun logoutProses() {
+        preference.removePreferences()
+
+        val repository: DataRepository = DataRepository.getInstance(requireContext())
+        lifecycleScope.launch {
+            repository.deleteAll()
+        }
+
+        val intent = Intent(requireContext(), LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
     }
 
     private fun progressBar(visible: Boolean) {

@@ -9,6 +9,8 @@ import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.kta.app.data.Schedule
 import com.kta.app.databinding.FragmentDetailScheduleBinding
+import com.kta.app.utils.formatDate
+import com.kta.app.utils.statusDesc
 
 class DetailScheduleFragment : BottomSheetDialogFragment() {
 
@@ -27,6 +29,13 @@ class DetailScheduleFragment : BottomSheetDialogFragment() {
             requireArguments().getParcelable("scheduleData")
         }
 
+        setupView()
+        setupButton()
+
+        return binding.root
+    }
+
+    private fun setupButton() {
         binding.background.setOnClickListener {
             dismiss()
         }
@@ -35,20 +44,22 @@ class DetailScheduleFragment : BottomSheetDialogFragment() {
             dismiss()
         }
 
-        binding.detailNama.text = scheduleData?.namaKegiatan
-        binding.detailTanggal.text = scheduleData?.tanggal
-        binding.detailJam.text = scheduleData?.waktu
-        binding.detailLokasi.text = scheduleData?.lokasi
-        binding.detailStatus.text = scheduleData?.status
-        binding.detailPIC.text = scheduleData?.pic
-        binding.detailNotulensi.text = scheduleData?.notulensi
-
         binding.btnAbsent.setOnClickListener {
             val name = scheduleData?.namaKegiatan
             Toast.makeText(requireContext(), name, Toast.LENGTH_SHORT).show()
         }
+    }
 
-        return binding.root
+    private fun setupView() {
+        binding.apply {
+            detailNama.text = scheduleData?.namaKegiatan
+            detailTanggal.text = scheduleData?.tanggal?.let { formatDate(it) }
+            detailJam.text = scheduleData?.waktu?.let { "$it WIB" }
+            detailLokasi.text = scheduleData?.lokasi
+            detailStatus.text = scheduleData?.status?.let { statusDesc(it.toInt()) }
+            detailPIC.text = scheduleData?.pic
+            detailNotulensi.text = scheduleData?.notulensi
+        }
     }
 
     companion object {

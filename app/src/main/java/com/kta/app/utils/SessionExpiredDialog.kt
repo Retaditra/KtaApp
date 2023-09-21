@@ -1,16 +1,14 @@
-package com.kta.app
+package com.kta.app.utils
 
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
+import com.kta.app.R
 import com.kta.app.databinding.DialogSessionExpiredBinding
 import com.kta.app.login.LoginActivity
-import com.kta.app.utils.EncryptedSharedPreferences
 
 class SessionExpiredDialog(private val context: Context) {
-
-    private val sharedPreferencesHelper: EncryptedSharedPreferences = EncryptedSharedPreferences(context)
 
     private fun showDialog() {
         val binding = DialogSessionExpiredBinding.inflate(LayoutInflater.from(context))
@@ -18,20 +16,14 @@ class SessionExpiredDialog(private val context: Context) {
             .setView(binding.root)
             .setCancelable(false)
             .create()
-        binding.textMessage.text = "Sesi login Anda telah berakhir. Silakan login kembali."
+        binding.textMessage.text = context.getString(R.string.dialogRelog)
 
         binding.btnLogin.setOnClickListener {
             val intent = Intent(context, LoginActivity::class.java)
             context.startActivity(intent)
             dialog.dismiss()
 
-            with(sharedPreferencesHelper.getSharedPreferences().edit()) {
-                remove("token")
-                remove("name")
-                remove("phone")
-                remove("id")
-                apply()
-            }
+            EncryptPreferences(context).removePreferences()
         }
 
         dialog.show()

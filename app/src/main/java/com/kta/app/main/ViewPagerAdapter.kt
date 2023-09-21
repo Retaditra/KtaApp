@@ -9,11 +9,9 @@ import com.kta.app.schedule.ScheduleFragment
 
 class ViewPagerAdapter(fragmentActivity: FragmentActivity) :
     FragmentStateAdapter(fragmentActivity) {
-
     override fun getItemCount(): Int {
         return 3
     }
-
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> KtaFragment()

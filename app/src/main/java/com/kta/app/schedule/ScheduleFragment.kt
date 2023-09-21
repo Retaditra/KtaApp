@@ -8,22 +8,29 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kta.app.R
-import com.kta.app.SessionExpiredDialog
 import com.kta.app.data.Schedule
+import com.kta.app.data.database.DataRepository
+import com.kta.app.data.database.ScheduleEntity
 import com.kta.app.databinding.FragmentScheduleBinding
-import com.kta.app.utils.EncryptedSharedPreferences
+import com.kta.app.utils.DataMapper
+import com.kta.app.utils.EncryptPreferences
+import com.kta.app.utils.SessionExpiredDialog
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ScheduleFragment : Fragment() {
 
     private lateinit var binding: FragmentScheduleBinding
-    private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ScheduleAdapter
+    private lateinit var repository: DataRepository
+    private lateinit var recyclerView: RecyclerView
     private val viewModel: ScheduleViewModel by viewModels()
-    private lateinit var sharedPreferencesHelper: EncryptedSharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,111 +42,130 @@ class ScheduleFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        sharedPreferencesHelper = EncryptedSharedPreferences(requireContext())
-
+        repository = DataRepository.getInstance(requireContext())
         recyclerView = binding.rvSchedule
+
+        binding.refresh.setOnClickListener {
+            binding.radioAll.isChecked = true
+            getSchedule()
+        }
+
+        setupRecyclerView()
+        showList()
+        filter()
+    }
+
+    private fun setupRecyclerView() {
         adapter = ScheduleAdapter(
             onClick = { showScheduleDetail(it) },
             absent = { absentButton(it) })
 
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = adapter
-
-        binding.refresh.setOnClickListener {
-            getSchedule()
+        recyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = this@ScheduleFragment.adapter
         }
+    }
 
-        getSchedule()
+    private fun showList() {
+        lifecycleScope.launch {
+            val schedules = withContext(Dispatchers.IO) {
+                repository.getAllSchedule()
+            }
+            if (schedules.isNotEmpty()) {
+                listToAdapter(schedules)
+                recyclerView.layoutManager?.scrollToPosition(0)
+            } else {
+                getSchedule()
+            }
+        }
+    }
+
+    private fun listToAdapter(schedule: List<ScheduleEntity>) {
+        val data = DataMapper().entityToSchedule(schedule)
+        val pagingData: PagingData<Schedule> = PagingData.from(data)
+        adapter.submitData(lifecycle, pagingData)
+    }
+
+    private fun filter() {
+        binding.radioAll.isChecked = true
+        binding.filterRadioGroup.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.radioAll -> {
+                    showList()
+                }
+                R.id.radioOn -> {
+                    lifecycleScope.launch {
+                        val schedules = withContext(Dispatchers.IO) { repository.getScheduleOn() }
+                        listToAdapter(schedules)
+                        recyclerView.layoutManager?.scrollToPosition(0)
+                    }
+                }
+                R.id.radioComing -> {
+                    lifecycleScope.launch {
+                        val schedules = withContext(Dispatchers.IO) { repository.getScheduleSoon() }
+                        listToAdapter(schedules)
+                        recyclerView.layoutManager?.scrollToPosition(0)
+                    }
+                }
+                R.id.radioEnd -> {
+                    lifecycleScope.launch {
+                        val schedules = withContext(Dispatchers.IO) { repository.getScheduleEnd() }
+                        listToAdapter(schedules)
+                        recyclerView.layoutManager?.scrollToPosition(0)
+                    }
+                }
+            }
+        }
     }
 
     private fun getSchedule() {
-        val token = sharedPreferencesHelper.getSharedPreferences().getString("token", null)
-        progressBar(true)
+        val preference = EncryptPreferences(requireContext())
+        val token = preference.getPreferences().getString("token", null)
 
+        progressBar(true)
         viewModel.getSchedule(token.toString(),
-            onSuccess = { list ->
-                val pagingData: PagingData<Schedule> = PagingData.from(list)
+            onSuccess = {
+                val pagingData: PagingData<Schedule> = PagingData.from(it)
                 adapter.submitData(lifecycle, pagingData)
+                recyclerView.layoutManager?.scrollToPosition(0)
+
+                val data = mutableListOf<ScheduleEntity>()
+                for (schedule in it) {
+                    val mapper = DataMapper().scheduleToEntity(schedule)
+                    data.add(mapper)
+                }
+                lifecycleScope.launch {
+                    repository.deleteAll()
+                    repository.insertAll(data)
+                }
                 progressBar(false)
             },
-            onFailure = { errorMessage ->
-                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+            message = {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
                 progressBar(false)
-                if (errorMessage == "unauthenticated") {
+                if (it == "unauthenticated") {
                     SessionExpiredDialog.show(requireContext())
                 }
+                progressBar(false)
             })
-    }
-
-    private fun progressBar(visible: Boolean) {
-        binding.progressBar.visibility = if (visible) View.VISIBLE else View.GONE
-    }
-
-    private fun showScheduleDetail(schedule: Schedule) {
-        val fragment = DetailScheduleFragment.newInstance(schedule)
-        val transaction = (requireActivity() as AppCompatActivity)
-            .supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragment_container, fragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
     }
 
     private fun absentButton(schedule: Schedule) {
         val name = schedule.namaKegiatan
         Toast.makeText(requireContext(), name, Toast.LENGTH_SHORT).show()
     }
-}
 
-/*
-val alarmManager = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
+    private fun showScheduleDetail(schedule: Schedule) {
+        val fragment = DetailScheduleFragment.newInstance(schedule)
+        (requireActivity() as AppCompatActivity).supportFragmentManager
+            .beginTransaction().apply {
+                replace(R.id.fragment_container, fragment)
+                addToBackStack(null)
+                commit()
+            }
+    }
 
-for (schedule in scheduleList) {
-    val timestamp = getTimestampFromString(schedule.tanggal, schedule.waktu)
-    if (timestamp != -1L) {
-        val intent = Intent(requireContext(), MyAlarmReceiver::class.java)
-        intent.putExtra("namaKegiatan", schedule.namaKegiatan)
-        intent.putExtra("schedule_id", schedule.id)
-
-        val pendingIntent = PendingIntent.getBroadcast(
-            requireContext(),
-            schedule.id,
-            intent,
-            PendingIntent.FLAG_IMMUTABLE
-        )
-
-        alarmManager.set(
-            AlarmManager.RTC_WAKEUP,
-            timestamp,
-            pendingIntent
-        )
+    private fun progressBar(visible: Boolean) {
+        binding.progressBar.visibility = if (visible) View.VISIBLE else View.GONE
     }
 }
-
-val pagingData: PagingData<ScheduleList> = PagingData.from(scheduleList)
-adapter.submitData(lifecycle, pagingData)
-}
-
-
-private fun getTimestampFromString(date: String, time: String): Long {
-try {
-    val timeFormatted = time.replace(" WIB", "").trim() // Hapus " WIB" dan spasi
-
-    val dateTimeString = "$date $timeFormatted"
-    val inputFormat = SimpleDateFormat("EEEE, d MMMM yyyy HH.mm", Locale("id"))
-    val outputFormat = SimpleDateFormat("dd/MM/yyyy HH.mm", Locale("id"))
-
-    val dateObj = inputFormat.parse(dateTimeString)
-
-    return if (dateObj != null) {
-        val outputDate = outputFormat.format(dateObj)
-        val outputDateObj = outputFormat.parse(outputDate)
-        outputDateObj?.time ?: -1L
-    } else {
-        -1L
-    }
-} catch (e: Exception) {
-    e.printStackTrace()
-}
-return -1L
-}
- */

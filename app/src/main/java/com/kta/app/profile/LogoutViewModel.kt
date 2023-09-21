@@ -12,7 +12,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class LogoutViewModel(application: Application) : AndroidViewModel(application) {
-
     fun logout(
         token: String,
         onSuccess: (String) -> Unit,
@@ -27,19 +26,18 @@ class LogoutViewModel(application: Application) : AndroidViewModel(application) 
                 response: Response<LogoutResponse>
             ) {
                 if (response.isSuccessful) {
-                    val msgLogout = response.body()?.message
-                    msgLogout?.let { onSuccess(it) }
+                    val message = response.body()?.message
+                    message?.let { onSuccess(it) }
 
                 } else {
-                    val errorBody = response.errorBody()?.string()
-                    if (errorBody != null) {
-                        val errorResponse = Gson().fromJson(errorBody, ErrorResponse::class.java)
+                    val error = response.errorBody()?.string()
+                    if (error != null) {
+                        val errorResponse = Gson().fromJson(error, ErrorResponse::class.java)
                         val errorMessage = errorResponse.errors?.message
                         errorMessage?.let { onFailure(it) }
                     } else {
-                        onFailure("Unknown error")
+                        onFailure(getApplication<Application>().getString(R.string.unknownError))
                     }
-
                 }
             }
 

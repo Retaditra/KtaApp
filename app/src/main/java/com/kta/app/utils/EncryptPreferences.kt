@@ -7,11 +7,11 @@ import android.security.keystore.KeyProperties
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 
-class EncryptedSharedPreferences(context: Context) {
+class EncryptPreferences(context: Context) {
 
-    private val sharedPreferences = createEncryptedSharedPreferences(context)
+    private val sharedPreferences = createPreferences(context)
 
-    private fun createEncryptedSharedPreferences(context: Context): SharedPreferences {
+    private fun createPreferences(context: Context): SharedPreferences {
         val keyGenParameterSpec = KeyGenParameterSpec.Builder(
             MasterKey.DEFAULT_MASTER_KEY_ALIAS,
             KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
@@ -35,7 +35,27 @@ class EncryptedSharedPreferences(context: Context) {
         )
     }
 
-    fun getSharedPreferences(): SharedPreferences {
+    fun getPreferences(): SharedPreferences {
         return sharedPreferences
+    }
+
+    fun savePreferences(token: String, name: String, phone: String, id: String) {
+        with(getPreferences().edit()) {
+            putString("token", token)
+            putString("name", name)
+            putString("phone", phone)
+            putString("id", id)
+            apply()
+        }
+    }
+
+    fun removePreferences() {
+        with(getPreferences().edit()) {
+            remove("token")
+            remove("name")
+            remove("phone")
+            remove("id")
+            apply()
+        }
     }
 }

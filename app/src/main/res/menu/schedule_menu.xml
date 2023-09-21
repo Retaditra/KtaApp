@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/all"
+        android:title="Semua" />
+
+    <item
+        android:id="@+id/on"
+        android:title="Berlangsung" />
+
+    <item
+        android:id="@+id/coming"
+        android:title="Akan Datang" />
+
+    <item
+        android:id="@+id/end"
+        android:title="Selesai" />
+</menu>

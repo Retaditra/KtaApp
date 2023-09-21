@@ -15,25 +15,36 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.kta.app.R
+import com.kta.app.data.database.DataRepository
 import com.kta.app.databinding.ActivityLoginBinding
 import com.kta.app.main.MainActivity
+import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private val viewModel: LoginViewModel by viewModels()
-    private var isBackPressedOnce = false
 
-    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupEmailValidation()
-        setupPasswordValidation()
+        val repository: DataRepository = DataRepository.getInstance(applicationContext)
+        lifecycleScope.launch {
+            repository.deleteAll()
+        }
 
+        backPressed()
+        setupEmailValidate()
+        setupPasswordValidate()
+        setupView()
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setupView() {
         binding.loginLayout.setOnTouchListener { _, _ ->
             clearFocusAndHideKeyboard()
             true
@@ -55,7 +66,7 @@ class LoginActivity : AppCompatActivity() {
 
         binding.resetPassword.setOnClickListener {
             val phoneNumber = "+62"
-            val message = "Saya ingin mengubah kata sandi saya dengan nama :"
+            val message = getString(R.string.messageReset)
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = Uri.parse(
                 "https://api.whatsapp.com/send?phone=$phoneNumber&text=${
@@ -64,7 +75,10 @@ class LoginActivity : AppCompatActivity() {
             )
             startActivity(intent)
         }
+    }
 
+    private fun backPressed() {
+        var isBackPressedOnce = false
         onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (isBackPressedOnce) {
@@ -72,7 +86,7 @@ class LoginActivity : AppCompatActivity() {
                 } else {
                     isBackPressedOnce = true
                     Toast.makeText(
-                        this@LoginActivity, "Tekan lagi untuk keluar",
+                        this@LoginActivity, getString(R.string.closeWarning),
                         Toast.LENGTH_SHORT
                     ).show()
                     Handler(Looper.getMainLooper()).postDelayed({
@@ -86,22 +100,17 @@ class LoginActivity : AppCompatActivity() {
     private fun login(phone: String, password: String) {
         progressBar(true)
         viewModel.login(
-            phone,
-            password,
+            phone, password,
             onSuccess = {
                 val intent = Intent(this@LoginActivity, MainActivity::class.java)
                 startActivity(intent)
                 finish()
                 progressBar(false)
             },
-            message = { successMessage ->
-                Toast.makeText(this@LoginActivity, successMessage, Toast.LENGTH_SHORT).show()
+            message = {
+                Toast.makeText(this@LoginActivity, it, Toast.LENGTH_SHORT).show()
                 progressBar(false)
             },
-            onFailure = { errorMessage ->
-                Toast.makeText(this@LoginActivity, errorMessage, Toast.LENGTH_SHORT).show()
-                progressBar(false)
-            }
         )
     }
 
@@ -119,7 +128,7 @@ class LoginActivity : AppCompatActivity() {
         return isValid
     }
 
-    private fun setupEmailValidation() {
+    private fun setupEmailValidate() {
         binding.loginPhone.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 binding.phoneLayout.error = null
@@ -130,7 +139,7 @@ class LoginActivity : AppCompatActivity() {
         })
     }
 
-    private fun setupPasswordValidation() {
+    private fun setupPasswordValidate() {
         binding.loginPassword.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 binding.passwordLayout.error = null
@@ -141,10 +150,6 @@ class LoginActivity : AppCompatActivity() {
         })
     }
 
-    private fun progressBar(visible: Boolean) {
-        binding.progressBarLogin.visibility = if (visible) View.VISIBLE else View.GONE
-    }
-
     private fun clearFocusAndHideKeyboard() {
         val currentFocusView = currentFocus
         if (currentFocusView != null) {
@@ -152,5 +157,9 @@ class LoginActivity : AppCompatActivity() {
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(currentFocusView.windowToken, 0)
         }
+    }
+
+    private fun progressBar(visible: Boolean) {
+        binding.progressBarLogin.visibility = if (visible) View.VISIBLE else View.GONE
     }
 }

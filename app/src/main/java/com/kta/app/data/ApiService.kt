@@ -12,13 +12,9 @@ interface ApiService {
     @POST("/api/login")
     fun loginUser(@Body loginRequest: LoginRequest): Call<LoginResponse>
 
-    @POST("/api/kegiatan")
-    fun getSchedule(
-        @Header("Authorization") token: String,
-    ): Call<ScheduleResponse>
-
     @POST("/api/logout")
-    fun logout(
-        @Header("Authorization") token: String,
-    ): Call<LogoutResponse>
+    fun logout(@Header("Authorization") token: String): Call<LogoutResponse>
+
+    @POST("/api/kegiatan")
+    fun getSchedule(@Header("Authorization") token: String): Call<ScheduleResponse>
 }

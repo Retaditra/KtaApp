@@ -8,9 +8,9 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_margin="5dp"
+    android:backgroundTint="@color/teal_200"
     android:clickable="true"
     android:focusable="true"
-    android:backgroundTint="@color/teal_200"
     card_view:cardCornerRadius="15dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -39,7 +39,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="Nama Kegiatan"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -52,8 +52,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
-                    android:backgroundTint="@color/black"
-                    android:background="@drawable/date_range" />
+                    android:background="@drawable/date_range"
+                    android:backgroundTint="@color/black" />
 
                 <TextView
                     android:id="@+id/tanggal"
@@ -75,8 +75,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
-                    android:backgroundTint="@color/black"
-                    android:background="@drawable/location_on" />
+                    android:background="@drawable/location_on"
+                    android:backgroundTint="@color/black" />
 
                 <TextView
                     android:id="@+id/lokasi"

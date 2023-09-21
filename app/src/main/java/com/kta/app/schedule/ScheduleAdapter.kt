@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kta.app.R
 import com.kta.app.data.Schedule
 import com.kta.app.databinding.ScheduleBinding
+import com.kta.app.utils.formatDate
+import com.kta.app.utils.statusDesc
 
 class ScheduleAdapter(
     private val onClick: (Schedule) -> Unit,
@@ -57,13 +59,13 @@ class ScheduleAdapter(
     inner class ItemViewHolder(private val binding: ScheduleBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(schedule: Schedule) {
+            val jamText = "${schedule.waktu} WIB"
             with(binding) {
                 namaKegiatan.text = schedule.namaKegiatan
-                tanggal.text = schedule.tanggal
+                tanggal.text = formatDate(schedule.tanggal)
                 lokasi.text = schedule.lokasi
-                jam.text = schedule.waktu
-                status.text = schedule.status
-
+                jam.text = jamText
+                status.text = statusDesc(schedule.status.toInt())
                 btnAbsent.setOnClickListener {
                     absent(schedule)
                 }

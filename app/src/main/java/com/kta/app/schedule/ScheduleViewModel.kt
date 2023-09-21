@@ -8,17 +8,16 @@ import com.kta.app.data.ApiConfig
 import com.kta.app.data.Schedule
 import com.kta.app.data.respone.ErrorResponse
 import com.kta.app.data.respone.ScheduleResponse
-import com.kta.app.utils.responseToSchedule
+import com.kta.app.utils.DataMapper
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class ScheduleViewModel(application: Application) : AndroidViewModel(application) {
-
     fun getSchedule(
         token: String,
         onSuccess: (List<Schedule>) -> Unit,
-        onFailure: (String) -> Unit
+        message: (String) -> Unit,
     ) {
         val apiService = ApiConfig().getApi()
         val call = apiService.getSchedule("Bearer $token")
@@ -29,26 +28,26 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
                 response: Response<ScheduleResponse>
             ) {
                 if (response.isSuccessful) {
-                    val responseSchedule = response.body()?.data
-                    if (responseSchedule != null) {
-                        val listHistory = responseToSchedule(responseSchedule)
-                        onSuccess(listHistory)
+                    val data = response.body()?.data
+                    if (data != null) {
+                        val schedule = DataMapper().responseToSchedule(data)
+                        onSuccess(schedule)
+                        message(response.body()?.message.toString())
                     }
                 } else {
-                    val errorBody = response.errorBody()?.string()
-                    if (errorBody != null) {
-                        val errorResponse = Gson().fromJson(errorBody, ErrorResponse::class.java)
+                    val error = response.errorBody()?.string()
+                    if (error != null) {
+                        val errorResponse = Gson().fromJson(error, ErrorResponse::class.java)
                         val errorMessage = errorResponse.errors?.message
-                        errorMessage?.let { onFailure(it) }
+                        errorMessage?.let { message(it) }
                     } else {
-                        onFailure("Unknown error")
+                        message(getApplication<Application>().getString(R.string.unknownError))
                     }
-
                 }
             }
 
             override fun onFailure(call: Call<ScheduleResponse>, t: Throwable) {
-                onFailure(getApplication<Application>().getString(R.string.failure))
+                message(getApplication<Application>().getString(R.string.failure))
             }
         })
     }
