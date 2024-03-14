@@ -4,18 +4,18 @@
     <item android:state_checked="true">
         <shape android:shape="rectangle">
             <!-- Isi warna latar belakang yang diinginkan saat dipilih -->
-            <solid android:color="@color/red" />
+            <solid android:color="@color/red_brick" />
             <!-- Isi radius sudut untuk membuat tampilan curved -->
-            <corners android:radius="8dp" />
+            <corners android:radius="12dp" />
         </shape>
     </item>
     <!-- State ketika radio button tidak dipilih (default) -->
     <item>
         <shape android:shape="rectangle">
             <!-- Isi warna latar belakang yang diinginkan saat tidak dipilih -->
-            <solid android:color="@color/teal_200" />
+            <solid android:color="@color/silver" />
             <!-- Isi radius sudut untuk membuat tampilan curved -->
-            <corners android:radius="8dp" />
+            <corners android:radius="12dp" />
         </shape>
     </item>
 </selector>

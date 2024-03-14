@@ -4,7 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/red_brick">
+    android:background="@drawable/gradient_background">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/red_brick"
+        android:paddingTop="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/loginLayout"
@@ -20,27 +30,19 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:layout_width="140dp"
-            android:layout_height="140dp"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
             android:layout_gravity="center"
+            android:alpha="0.5"
             android:maxHeight="20dp"
             android:src="@drawable/img_logo" />
 
         <TextView
-            android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="E-KTA"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="PDI Perjuangan"
+            android:textColor="@color/silver"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -48,7 +50,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Magelang Tengah"
+            android:text="-"
+            android:textColor="@color/silver"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="-"
+            android:textColor="@color/silver"
             android:textSize="20sp"
             android:textStyle="bold" />
     </LinearLayout>
@@ -57,8 +69,8 @@
         android:id="@+id/loginFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/curved_background"
-        android:backgroundTint="@color/white"
+        android:background="@drawable/curved_top"
+        android:backgroundTint="@color/white_light"
         android:descendantFocusability="beforeDescendants"
         android:focusableInTouchMode="true"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -66,7 +78,6 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
-            android:id="@+id/loginInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -84,6 +95,7 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="16dp"
                 android:text="Login"
+                android:textColor="@color/grey"
                 android:textSize="30sp"
                 android:textStyle="bold" />
 
@@ -92,25 +104,25 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:boxCornerRadiusBottomEnd="20dp"
-                app:boxCornerRadiusBottomStart="20dp"
-                app:boxCornerRadiusTopEnd="20dp"
-                app:boxCornerRadiusTopStart="20dp"
+                app:boxCornerRadiusBottomEnd="27dp"
+                app:boxCornerRadiusBottomStart="27dp"
+                app:boxCornerRadiusTopEnd="27dp"
+                app:boxCornerRadiusTopStart="27dp"
                 app:boxStrokeColor="@color/black"
-                app:boxStrokeErrorColor="@color/red"
-                app:boxStrokeWidth="2dp"
+                app:boxStrokeWidth="1dp"
+                app:boxStrokeWidthFocused="1dp"
+                app:errorEnabled="true"
                 app:errorIconDrawable="@null"
                 app:errorTextColor="@color/red_brick"
                 app:hintTextColor="@color/black"
-                app:startIconDrawable="@drawable/ic_smartphone_24">
+                app:startIconDrawable="@drawable/person">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/loginPhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="@string/no_whatsapp"
+                    android:hint="Username"
                     android:inputType="phone"
                     tools:ignore="SpeakableTextPresentCheck" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -120,18 +132,19 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                app:boxCornerRadiusBottomEnd="20dp"
-                app:boxCornerRadiusBottomStart="20dp"
-                app:boxCornerRadiusTopEnd="20dp"
-                app:boxCornerRadiusTopStart="20dp"
+                app:boxCornerRadiusBottomEnd="27dp"
+                app:boxCornerRadiusBottomStart="27dp"
+                app:boxCornerRadiusTopEnd="27dp"
+                app:boxCornerRadiusTopStart="27dp"
                 app:boxStrokeColor="@color/black"
-                app:boxStrokeWidth="2dp"
+                app:boxStrokeWidth="1dp"
+                app:boxStrokeWidthFocused="1dp"
+                app:errorEnabled="true"
                 app:errorIconDrawable="@null"
                 app:errorTextColor="@color/red_brick"
                 app:hintTextColor="@color/black"
                 app:passwordToggleEnabled="true"
-                app:startIconDrawable="@drawable/baseline_lock_24">
+                app:startIconDrawable="@drawable/lock">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/loginPassword"
@@ -144,20 +157,15 @@
                     tools:ignore="SpeakableTextPresentCheck" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/loginButton"
-                style="@style/MaterialButtonStyle"
-                android:layout_width="150dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:backgroundTint="@color/red_brick"
-                android:text="@string/login" />
+            <include
+                android:id="@+id/button"
+                layout="@layout/button" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:text="Lupa kata sandi?" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -165,19 +173,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginBottom="30dp"
+                android:layout_marginBottom="20dp"
                 android:text="Hubungi Kami"
                 android:textColor="@color/red_200" />
         </LinearLayout>
     </FrameLayout>
 
     <ProgressBar
-        android:id="@+id/progressBarLogin"
-        style="@style/ProgressBar"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="5dp"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/orange"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="gone" />
+        app:layout_constraintTop_toBottomOf="@+id/view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

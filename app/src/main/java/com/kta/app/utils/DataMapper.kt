@@ -2,51 +2,80 @@ package com.kta.app.utils
 
 import com.kta.app.data.Schedule
 import com.kta.app.data.database.ScheduleEntity
-import com.kta.app.data.respone.ItemSchedule
+import com.kta.app.data.respone.ScheduleData
+import com.kta.app.data.respone.TodayItem
 
 class DataMapper {
-    fun responseToSchedule(responseSchedule: List<ItemSchedule>): List<Schedule> {
-        return responseSchedule.map {
-            Schedule(
-                it.id,
-                it.nameSchedule,
-                it.location,
-                it.time,
-                it.date,
-                it.absent,
-                it.status,
-                it.pic,
-                it.notulen
+    fun responseToSchedule(itemDataList: List<ScheduleData>): List<Schedule> {
+        val scheduleList = mutableListOf<Schedule>()
+
+        for (itemData in itemDataList) {
+            val itemSchedule = itemData.itemSchedule
+            val schedule = Schedule(
+                id_member = itemData.id_member,
+                status_absent = itemData.status_absent,
+                id = itemSchedule.id,
+                name = itemSchedule.name,
+                location = itemSchedule.location,
+                time = itemSchedule.time,
+                date = itemSchedule.date,
+                absent = itemSchedule.absent,
+                status = itemSchedule.status,
+                pic = itemSchedule.pic,
+                note = itemSchedule.note
             )
+            scheduleList.add(schedule)
         }
+
+        return scheduleList
     }
 
-    fun scheduleToEntity(schedule: Schedule): ScheduleEntity {
+    fun scheduleToEntity(it: Schedule): ScheduleEntity {
         return ScheduleEntity(
-            id = schedule.id,
-            nama = schedule.namaKegiatan,
-            lokasi = schedule.lokasi,
-            waktu = schedule.waktu,
-            tanggal = schedule.tanggal,
-            aksi = schedule.aksi,
-            status = schedule.status,
-            pic = schedule.pic,
-            notulensi = schedule.notulensi
+            id_member = it.id_member,
+            status_absent = it.status_absent,
+            id = it.id,
+            name = it.name,
+            location = it.location,
+            time = it.time,
+            date = it.date,
+            absent = it.absent,
+            status = it.status,
+            pic = it.pic,
+            note = it.note
         )
     }
 
     fun entityToSchedule(entity: List<ScheduleEntity>): List<Schedule> {
         return entity.map {
             Schedule(
-                it.id,
-                it.nama,
-                it.lokasi,
-                it.waktu,
-                it.tanggal,
-                it.aksi,
-                it.status,
-                it.pic,
-                it.notulensi
+                id_member = it.id_member,
+                status_absent = it.status_absent,
+                id = it.id,
+                name = it.name,
+                location = it.location,
+                time = it.time,
+                date = it.date,
+                absent = it.absent,
+                status = it.status,
+                pic = it.pic,
+                note = it.note
+            )
+        }
+    }
+
+    fun todayItemToSchedule(data: List<TodayItem>): List<Schedule> {
+        return data.map {
+            Schedule(
+                id = it.id,
+                name = it.name,
+                location = it.location,
+                time = it.time,
+                date = it.date,
+                absent = it.absent,
+                status = it.status,
+                pic = it.pic,
+                note = it.note
             )
         }
     }

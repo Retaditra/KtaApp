@@ -10,14 +10,15 @@ data class LoginRequest(
 )
 
 data class LoginResponse(
+    @SerializedName("status")
+    val status: String,
     @SerializedName("message")
     val message: String,
+    @SerializedName("data")
+    val data: LoginData
+)
+
+data class LoginData(
     @SerializedName("token")
     val token: String,
-    @SerializedName("nama")
-    val nama: String,
-    @SerializedName("no_hp")
-    val no_hp: String,
-    @SerializedName("id_anggota")
-    val id_anggota: String,
 )

@@ -1,35 +1,23 @@
 <resources>
     <string name="app_name">KtaApp</string>
 
-    <string name="login">Masuk</string>
-    <string name="no_whatsapp">No. Whatsapp</string>
     <string name="password">Password</string>
     <string name="emptyPhone">Nomor tidak boleh kosong</string>
     <string name="invalid_password">Password Minimal 8 Karakter</string>
     <string name="failedLogin">Pastikan Nomor dan Password sudah benar</string>
 
-    <string name="kta_digital">KTA DIgital</string>
-    <string name="kegiatan">Kegiatan</string>
     <string name="absent">Absen</string>
-    <string name="profile">Profile</string>
+    <string name="refreshSuccess">Berhasil Diperbarui</string>
 
-    <string name="schedule">Kegiatan</string>
-    <string name="absensi">Absensi</string>
-
-    <string name="logout">Logout</string>
     <string name="messageLogout">Logout Success</string>
-
-    <string name="pref_key_notify">key_notification</string>
-
-    <string name="name">Nama</string>
-    <string name="id">ID</string>
-    <string name="kta">KTA</string>
-
     <string name="closeWarning">Tekan lagi untuk keluar</string>
     <string name="dialogRelog">Sesi login Anda telah berakhir. Silakan login kembali.</string>
-    <string name="failure">Tidak terhubung dengan Server</string>
-    <string name="unknownError">Terjadi Kesalahan</string>
+    <string name="failure">Tidak dapat terhubung dengan Server</string>
+
+    <string name="user_phone">0%s</string>
+    <string name="user_birth">%s, %s</string>
 
     <string name="messageReset">Saya ingin mengubah kata sandi saya dengan nama :</string>
+    <string name="imageFailed">Gagal memuat gambar</string>
 
 </resources>

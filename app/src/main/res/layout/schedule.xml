@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/schedule"
     style="?attr/materialCardViewElevatedStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_margin="5dp"
-    android:backgroundTint="@color/teal_200"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginBottom="5dp"
+    android:backgroundTint="@color/white"
     android:clickable="true"
+    android:elevation="5dp"
     android:focusable="true"
+    app:rippleColor="@color/silver_200"
+    app:strokeColor="@color/silver"
     card_view:cardCornerRadius="15dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,12 +23,13 @@
         android:layout_margin="10dp">
 
         <LinearLayout
-            android:id="@+id/linearLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingStart="5dp"
+            android:paddingStart="10dp"
+            android:paddingTop="5dp"
             android:paddingEnd="5dp"
+            android:paddingBottom="10dp"
             card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintEnd_toStartOf="@+id/btnAbsent"
             card_view:layout_constraintStart_toStartOf="parent"
@@ -34,13 +39,14 @@
                 android:id="@+id/namaKegiatan"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="10dp"
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="Nama Kegiatan"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:text="Nama"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:transitionName="name" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -48,22 +54,30 @@
                 android:layout_marginBottom="5dp"
                 android:orientation="horizontal">
 
-                <ImageView
+                <TextView
+                    android:id="@+id/desc_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/date_range"
-                    android:backgroundTint="@color/black" />
-
-                <TextView
-                    android:id="@+id/tanggal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_weight="1"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="Senin, 4 September 2023" />
+                    android:text="-"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="  |  "
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/desc_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
@@ -72,58 +86,38 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
                     android:layout_marginEnd="5dp"
-                    android:background="@drawable/location_on"
-                    android:backgroundTint="@color/black" />
+                    android:background="@drawable/location" />
 
                 <TextView
-                    android:id="@+id/lokasi"
+                    android:id="@+id/desc_location"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="Alun-alun Purwokerto" />
+                    android:text="-"
+                    android:textSize="13sp" />
             </LinearLayout>
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/jam"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="12.00 WIB"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            card_view:layout_constraintEnd_toEndOf="parent"
-            card_view:layout_constraintStart_toEndOf="@+id/linearLayout"
-            card_view:layout_constraintTop_toTopOf="parent" />
-
-
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnAbsent"
-            style="@style/MaterialButtonStyle"
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="match_parent"
-            android:layout_marginTop="1dp"
             android:backgroundTint="@color/red"
+            android:elevation="5dp"
             android:text="@string/absent"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toTopOf="@+id/status"
-            card_view:layout_constraintEnd_toEndOf="parent"
-            card_view:layout_constraintTop_toBottomOf="@+id/jam" />
-
-        <TextView
-            android:id="@+id/status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Akan Datang"
-            android:textSize="12sp"
-            card_view:layout_constraintBottom_toBottomOf="parent"
-            card_view:layout_constraintEnd_toEndOf="parent"
-            card_view:layout_constraintStart_toStartOf="@+id/btnAbsent" />
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:cornerRadius="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

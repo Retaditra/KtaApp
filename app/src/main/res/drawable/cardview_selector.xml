@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Warna ketika ditekan -->
-    <item android:state_pressed="true" android:drawable="@color/teal_700" android:color="@color/teal_700" />
-    <!-- Warna ketika tidak ditekan -->
-    <item android:drawable="@android:color/white" android:color="@color/white" />
-</selector>

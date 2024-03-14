@@ -5,15 +5,17 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Schedule(
+    val id_member: Int? = null,
+    val status_absent: String? = null,
     val id: Int,
-    val namaKegiatan: String,
-    val lokasi: String,
-    val waktu: String,
-    val tanggal: String,
-    val aksi: String,
+    val name: String,
+    val location: String,
+    val time: String,
+    val date: String,
+    val absent: String,
     val status: String,
     val pic: String,
-    val notulensi: String
+    val note: String
 ) : Parcelable
 
 

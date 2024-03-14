@@ -10,7 +10,6 @@ import androidx.security.crypto.MasterKey
 class EncryptPreferences(context: Context) {
 
     private val sharedPreferences = createPreferences(context)
-
     private fun createPreferences(context: Context): SharedPreferences {
         val keyGenParameterSpec = KeyGenParameterSpec.Builder(
             MasterKey.DEFAULT_MASTER_KEY_ALIAS,
@@ -39,12 +38,9 @@ class EncryptPreferences(context: Context) {
         return sharedPreferences
     }
 
-    fun savePreferences(token: String, name: String, phone: String, id: String) {
+    fun savePreferences(token: String) {
         with(getPreferences().edit()) {
             putString("token", token)
-            putString("name", name)
-            putString("phone", phone)
-            putString("id", id)
             apply()
         }
     }
@@ -52,9 +48,6 @@ class EncryptPreferences(context: Context) {
     fun removePreferences() {
         with(getPreferences().edit()) {
             remove("token")
-            remove("name")
-            remove("phone")
-            remove("id")
             apply()
         }
     }

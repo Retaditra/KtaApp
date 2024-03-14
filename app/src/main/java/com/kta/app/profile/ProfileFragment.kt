@@ -9,18 +9,20 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.kta.app.R
-import com.kta.app.data.database.DataRepository
+import com.kta.app.data.database.ScheduleRepository
 import com.kta.app.databinding.FragmentProfileBinding
 import com.kta.app.login.LoginActivity
 import com.kta.app.utils.EncryptPreferences
+import com.kta.app.utils.UserProfilePreferences
 import kotlinx.coroutines.launch
 
 class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
     private lateinit var preference: EncryptPreferences
-    private val viewModel: LogoutViewModel by viewModels()
+    private val viewModel: ProfileViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,50 +36,54 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         preference = EncryptPreferences(requireContext())
 
-        getProfile()
+        userProfile()
         binding.logoutButton.setOnClickListener {
             logout()
         }
     }
 
-    private fun getProfile() {
-        val profile = preference.getPreferences()
-        val name = profile.getString("name", null)
-        val phone = profile.getString("phone", null)
-        val id = profile.getString("id", null)
+    private fun userProfile() {
+        UserProfilePreferences.init(requireContext())
+        val data = UserProfilePreferences.getUserProfile()
 
         binding.apply {
-            userName.text = name
-            userPhone.text = phone
-            userID.text = id
+            Glide.with(requireContext())
+                .load(data.imageProfile)
+                .circleCrop()
+                .into(binding.userImage)
+            userName.text = data.name
+            userId.text = data.id
+            userRole.text = data.position
+            userPhone.text = getString(R.string.user_phone, data.phone)
+            userBirth.text = getString(R.string.user_birth, data.birthplace, data.dateBirth)
         }
     }
 
     private fun logout() {
         val token = preference.getPreferences().getString("token", null)
 
-        progressBar(true)
         viewModel.logout(token.toString(),
             onSuccess = {
                 Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
                 logoutProses()
-                progressBar(false)
             },
             onFailure = {
                 logoutProses()
                 Toast.makeText(
-                    requireContext(),
-                    getString(R.string.messageLogout),
-                    Toast.LENGTH_SHORT
+                    requireContext(), getString(R.string.messageLogout), Toast.LENGTH_SHORT
                 ).show()
-                progressBar(false)
+            },
+            loading = {
+                binding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
             })
     }
 
     private fun logoutProses() {
+        UserProfilePreferences.init(requireContext())
+        UserProfilePreferences.removeUserProfile()
         preference.removePreferences()
 
-        val repository: DataRepository = DataRepository.getInstance(requireContext())
+        val repository: ScheduleRepository = ScheduleRepository.getInstance(requireContext())
         lifecycleScope.launch {
             repository.deleteAll()
         }
@@ -86,9 +92,4 @@ class ProfileFragment : Fragment() {
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
     }
-
-    private fun progressBar(visible: Boolean) {
-        binding.progressBar.visibility = if (visible) View.VISIBLE else View.GONE
-    }
 }
-

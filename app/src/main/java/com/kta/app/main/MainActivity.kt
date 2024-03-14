@@ -44,15 +44,15 @@ class MainActivity : AppCompatActivity() {
             when (position) {
                 0 -> {
                     //tab.text = "KTA"
-                    tab.icon = ContextCompat.getDrawable(this, R.drawable.ic_home_24)
+                    tab.icon = ContextCompat.getDrawable(this, R.drawable.home)
                 }
                 1 -> {
                     //tab.text = "Schedule"
-                    tab.icon = ContextCompat.getDrawable(this, R.drawable.list_alt_24)
+                    tab.icon = ContextCompat.getDrawable(this, R.drawable.task)
                 }
                 2 -> {
                     //tab.text = "Profile"
-                    tab.icon = ContextCompat.getDrawable(this, R.drawable.account_circle_24)
+                    tab.icon = ContextCompat.getDrawable(this, R.drawable.user)
                 }
             }
         }.attach()

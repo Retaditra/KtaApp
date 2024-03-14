@@ -1,5 +1,6 @@
 package com.kta.app.schedule
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,10 +10,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kta.app.R
 import com.kta.app.data.Schedule
 import com.kta.app.databinding.ScheduleBinding
+import com.kta.app.utils.ButtonUtils
 import com.kta.app.utils.formatDate
-import com.kta.app.utils.statusDesc
 
 class ScheduleAdapter(
+    private val context: Context,
     private val onClick: (Schedule) -> Unit,
     private val absent: (Schedule) -> Unit,
 ) : PagingDataAdapter<Schedule, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
@@ -58,14 +60,19 @@ class ScheduleAdapter(
 
     inner class ItemViewHolder(private val binding: ScheduleBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
         fun bind(schedule: Schedule) {
-            val jamText = "${schedule.waktu} WIB"
+            val jamText = "${schedule.time} WIB"
             with(binding) {
-                namaKegiatan.text = schedule.namaKegiatan
-                tanggal.text = formatDate(schedule.tanggal)
-                lokasi.text = schedule.lokasi
-                jam.text = jamText
-                status.text = statusDesc(schedule.status.toInt())
+                namaKegiatan.text = schedule.name
+                descDate.text = formatDate(schedule.date)
+                descLocation.text = schedule.location
+                descTime.text = jamText
+
+                ButtonUtils.setButtonStatus(btnAbsent, schedule)
+                ButtonUtils.setButtonTextAndStyle(btnAbsent, schedule)
+                ButtonUtils.setButtonBackgroundColor(context, btnAbsent, schedule)
+
                 btnAbsent.setOnClickListener {
                     absent(schedule)
                 }

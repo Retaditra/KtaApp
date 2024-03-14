@@ -5,10 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.kta.app.data.Schedule
 import com.kta.app.databinding.FragmentDetailScheduleBinding
+import com.kta.app.utils.Constant
 import com.kta.app.utils.formatDate
 import com.kta.app.utils.statusDesc
 
@@ -24,9 +24,9 @@ class DetailScheduleFragment : BottomSheetDialogFragment() {
         binding = FragmentDetailScheduleBinding.inflate(inflater, container, false)
 
         scheduleData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            requireArguments().getParcelable("scheduleData", Schedule::class.java)
+            requireArguments().getParcelable(Constant.KEY_SCHEDULE, Schedule::class.java)
         } else {
-            requireArguments().getParcelable("scheduleData")
+            requireArguments().getParcelable(Constant.KEY_SCHEDULE)
         }
 
         setupView()
@@ -43,22 +43,17 @@ class DetailScheduleFragment : BottomSheetDialogFragment() {
         binding.closeButton.setOnClickListener {
             dismiss()
         }
-
-        binding.btnAbsent.setOnClickListener {
-            val name = scheduleData?.namaKegiatan
-            Toast.makeText(requireContext(), name, Toast.LENGTH_SHORT).show()
-        }
     }
 
     private fun setupView() {
         binding.apply {
-            detailNama.text = scheduleData?.namaKegiatan
-            detailTanggal.text = scheduleData?.tanggal?.let { formatDate(it) }
-            detailJam.text = scheduleData?.waktu?.let { "$it WIB" }
-            detailLokasi.text = scheduleData?.lokasi
+            detailName.text = scheduleData?.name
+            detailDate.text = scheduleData?.date?.let { formatDate(it) }
+            detailTime.text = scheduleData?.time?.let { "$it WIB" }
+            detailLocation.text = scheduleData?.location
             detailStatus.text = scheduleData?.status?.let { statusDesc(it.toInt()) }
-            detailPIC.text = scheduleData?.pic
-            detailNotulensi.text = scheduleData?.notulensi
+            detailPic.text = scheduleData?.pic
+            detailNote.text = scheduleData?.note
         }
     }
 
@@ -66,7 +61,7 @@ class DetailScheduleFragment : BottomSheetDialogFragment() {
         fun newInstance(scheduleData: Schedule): DetailScheduleFragment {
             val fragment = DetailScheduleFragment()
             val args = Bundle()
-            args.putParcelable("scheduleData", scheduleData)
+            args.putParcelable(Constant.KEY_SCHEDULE, scheduleData)
             fragment.arguments = args
             return fragment
         }

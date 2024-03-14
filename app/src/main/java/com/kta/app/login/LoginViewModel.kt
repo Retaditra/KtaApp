@@ -17,7 +17,9 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         password: String,
         onSuccess: () -> Unit,
         message: (String) -> Unit,
+        loading: (Boolean) -> Unit
     ) {
+        loading(true)
         val request = LoginRequest(phone, password)
         val call = ApiConfig().getApi().loginUser(request)
 
@@ -26,31 +28,24 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                 call: Call<LoginResponse>, response: Response<LoginResponse>
             ) {
                 if (response.isSuccessful) {
-                    val token = response.body()?.token
-
+                    val token = response.body()?.data?.token
                     if (token != null) {
-                        val userPhone = response.body()?.no_hp
-                        val userName = response.body()?.nama
-                        val userId = response.body()?.id_anggota
-                        EncryptPreferences(getApplication()).savePreferences(
-                            token = token,
-                            name = userName.toString(),
-                            phone = userPhone.toString(),
-                            id = userId.toString(),
-                        )
-                        onSuccess()
-
+                        EncryptPreferences(getApplication()).savePreferences(token = token)
                         val success = response.body()?.message
                         message(success.toString())
+                        onSuccess()
+                        loading(false)
                     }
 
                 } else {
                     message(getApplication<Application>().getString(R.string.failedLogin))
+                    loading(false)
                 }
             }
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 message(getApplication<Application>().getString(R.string.failure))
+                loading(false)
             }
         })
     }

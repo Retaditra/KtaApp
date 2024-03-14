@@ -1,6 +1,8 @@
 package com.kta.app.schedule
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,12 +16,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kta.app.R
 import com.kta.app.data.Schedule
-import com.kta.app.data.database.DataRepository
 import com.kta.app.data.database.ScheduleEntity
+import com.kta.app.data.database.ScheduleRepository
 import com.kta.app.databinding.FragmentScheduleBinding
+import com.kta.app.utils.Constant
 import com.kta.app.utils.DataMapper
 import com.kta.app.utils.EncryptPreferences
-import com.kta.app.utils.SessionExpiredDialog
+import com.kta.app.utils.expired
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -28,8 +31,9 @@ class ScheduleFragment : Fragment() {
 
     private lateinit var binding: FragmentScheduleBinding
     private lateinit var adapter: ScheduleAdapter
-    private lateinit var repository: DataRepository
+    private lateinit var repository: ScheduleRepository
     private lateinit var recyclerView: RecyclerView
+    private val handler = Handler(Looper.getMainLooper())
     private val viewModel: ScheduleViewModel by viewModels()
 
     override fun onCreateView(
@@ -42,41 +46,24 @@ class ScheduleFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        repository = DataRepository.getInstance(requireContext())
+        repository = ScheduleRepository.getInstance(requireContext())
         recyclerView = binding.rvSchedule
 
-        binding.refresh.setOnClickListener {
-            binding.radioAll.isChecked = true
-            getSchedule()
-        }
-
         setupRecyclerView()
-        showList()
+        getSchedule()
+        refresh()
         filter()
     }
 
     private fun setupRecyclerView() {
         adapter = ScheduleAdapter(
+            context = requireContext(),
             onClick = { showScheduleDetail(it) },
             absent = { absentButton(it) })
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = this@ScheduleFragment.adapter
-        }
-    }
-
-    private fun showList() {
-        lifecycleScope.launch {
-            val schedules = withContext(Dispatchers.IO) {
-                repository.getAllSchedule()
-            }
-            if (schedules.isNotEmpty()) {
-                listToAdapter(schedules)
-                recyclerView.layoutManager?.scrollToPosition(0)
-            } else {
-                getSchedule()
-            }
         }
     }
 
@@ -87,11 +74,14 @@ class ScheduleFragment : Fragment() {
     }
 
     private fun filter() {
-        binding.radioAll.isChecked = true
         binding.filterRadioGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.radioAll -> {
-                    showList()
+                    lifecycleScope.launch {
+                        val schedules = withContext(Dispatchers.IO) { repository.getAllSchedule() }
+                        listToAdapter(schedules)
+                        recyclerView.layoutManager?.scrollToPosition(0)
+                    }
                 }
                 R.id.radioOn -> {
                     lifecycleScope.launch {
@@ -118,11 +108,28 @@ class ScheduleFragment : Fragment() {
         }
     }
 
-    private fun getSchedule() {
+    private fun refresh() {
+        binding.refresh.setOnClickListener {
+            binding.refresh.visibility = View.GONE
+            getSchedule { success, message ->
+                if (success) {
+                    Toast.makeText(
+                        requireContext(), getString(R.string.refreshSuccess), Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                }
+            }
+            handler.postDelayed({
+                binding.refresh.visibility = View.VISIBLE
+            }, 3000.toLong())
+        }
+    }
+
+    private fun getSchedule(callback: (Boolean, String?) -> Unit = { _, _ -> }) {
         val preference = EncryptPreferences(requireContext())
         val token = preference.getPreferences().getString("token", null)
-
-        progressBar(true)
+        binding.radioAll.isChecked = true
         viewModel.getSchedule(token.toString(),
             onSuccess = {
                 val pagingData: PagingData<Schedule> = PagingData.from(it)
@@ -138,21 +145,34 @@ class ScheduleFragment : Fragment() {
                     repository.deleteAll()
                     repository.insertAll(data)
                 }
-                progressBar(false)
+                callback(true, null)
             },
-            message = {
+            onFailure = {
                 Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
-                progressBar(false)
-                if (it == "unauthenticated") {
-                    SessionExpiredDialog.show(requireContext())
-                }
-                progressBar(false)
+                expired(it, requireContext())
+                callback(false, it)
+            },
+            loading = {
+                binding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
             })
     }
 
     private fun absentButton(schedule: Schedule) {
-        val name = schedule.namaKegiatan
-        Toast.makeText(requireContext(), name, Toast.LENGTH_SHORT).show()
+        val id = schedule.id
+        val preference = EncryptPreferences(requireContext())
+        val token = preference.getPreferences().getString("token", null)
+        viewModel.absent(token.toString(), id,
+            message = {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                expired(it, requireContext())
+                if (it == Constant.ABSENT) {
+                    getSchedule()
+                }
+            },
+            loading = {
+                binding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
+            }
+        )
     }
 
     private fun showScheduleDetail(schedule: Schedule) {
@@ -163,9 +183,5 @@ class ScheduleFragment : Fragment() {
                 addToBackStack(null)
                 commit()
             }
-    }
-
-    private fun progressBar(visible: Boolean) {
-        binding.progressBar.visibility = if (visible) View.VISIBLE else View.GONE
     }
 }

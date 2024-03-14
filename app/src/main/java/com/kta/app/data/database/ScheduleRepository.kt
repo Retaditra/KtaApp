@@ -3,7 +3,7 @@ package com.kta.app.data.database
 import android.content.Context
 import com.kta.app.utils.executeThread
 
-class DataRepository(private val dao: ScheduleDao) {
+class ScheduleRepository(private val dao: ScheduleDao) {
 
     fun getAllSchedule(): List<ScheduleEntity> {
         return dao.getAllSchedule()
@@ -31,22 +31,15 @@ class DataRepository(private val dao: ScheduleDao) {
 
     companion object {
         @Volatile
-        private var instance: DataRepository? = null
-        fun getInstance(context: Context): DataRepository {
-            return instance ?: synchronized(DataRepository::class.java) {
+        private var instance: ScheduleRepository? = null
+        fun getInstance(context: Context): ScheduleRepository {
+            return instance ?: synchronized(ScheduleRepository::class.java) {
                 if (instance == null) {
                     val database = ScheduleDatabase.getInstance(context)
-                    instance = DataRepository(database.scheduleDao())
+                    instance = ScheduleRepository(database.scheduleDao())
                 }
-                return instance as DataRepository
+                return instance as ScheduleRepository
             }
         }
     }
 }
-
-/*
-   fun getNearestSchedule(queryType: QueryType): LiveData<ScheduleEntity?> {
-        val query = QueryUtil.nearestQuery(queryType)
-        return dao.getNearestSchedule(query)
-    }
- */

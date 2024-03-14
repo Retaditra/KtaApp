@@ -17,7 +17,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.kta.app.R
-import com.kta.app.data.database.DataRepository
+import com.kta.app.data.database.ScheduleRepository
 import com.kta.app.databinding.ActivityLoginBinding
 import com.kta.app.main.MainActivity
 import kotlinx.coroutines.launch
@@ -32,7 +32,7 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val repository: DataRepository = DataRepository.getInstance(applicationContext)
+        val repository: ScheduleRepository = ScheduleRepository.getInstance(applicationContext)
         lifecycleScope.launch {
             repository.deleteAll()
         }
@@ -41,6 +41,7 @@ class LoginActivity : AppCompatActivity() {
         setupEmailValidate()
         setupPasswordValidate()
         setupView()
+
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -55,7 +56,7 @@ class LoginActivity : AppCompatActivity() {
             true
         }
 
-        binding.loginButton.setOnClickListener {
+        binding.button.loginButton.setOnClickListener {
             val phone = binding.loginPhone.text.toString()
             val password = binding.loginPassword.text.toString()
 
@@ -98,19 +99,19 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun login(phone: String, password: String) {
-        progressBar(true)
         viewModel.login(
             phone, password,
             onSuccess = {
                 val intent = Intent(this@LoginActivity, MainActivity::class.java)
                 startActivity(intent)
                 finish()
-                progressBar(false)
             },
             message = {
                 Toast.makeText(this@LoginActivity, it, Toast.LENGTH_SHORT).show()
-                progressBar(false)
             },
+            loading = {
+                binding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
+            }
         )
     }
 
@@ -157,9 +158,5 @@ class LoginActivity : AppCompatActivity() {
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(currentFocusView.windowToken, 0)
         }
-    }
-
-    private fun progressBar(visible: Boolean) {
-        binding.progressBarLogin.visibility = if (visible) View.VISIBLE else View.GONE
     }
 }

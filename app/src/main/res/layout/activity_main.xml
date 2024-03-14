@@ -18,20 +18,27 @@
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="@color/red_brick"
-        android:background="@drawable/curved_background_tab"
+        android:layout_height="60dp"
+        android:background="@drawable/curved_top"
+        android:backgroundTint="@color/white_200"
+        android:elevation="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:tabGravity="fill"
-        app:tabIconTint="@color/white"
         app:tabIndicator="@drawable/tab_indicator_circle"
-        app:tabIndicatorColor="@color/black"
+        app:tabIndicatorColor="@color/red_brick"
         app:tabIndicatorGravity="center"
         app:tabMode="fixed" />
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
